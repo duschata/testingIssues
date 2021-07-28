@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+}
+
+configurations {
+
+//    junit4Test {
+//        extendsFrom testImplementation
+//    }
+//    junit5Test {
+//        extendsFrom testImplementation
+//    }
+}
+
+
+sourceSets {
+
+//    junit5Test { //automatically creates: testweldImplementation, testweldCompileOnly, testweldRuntimeOnly
+//        java {
+//            compileClasspath += sourceSets.main.output
+//            compileClasspath += sourceSets.test.output
+//            runtimeClasspath += sourceSets.main.output
+//            runtimeClasspath += sourceSets.test.output
+//        }
+//        resources {
+//            srcDirs = ['src/test/resources', 'src/resources']
+//        }
+//    }
+
+//    junit4Test { //automatically creates: testweldImplementation, testweldCompileOnly, testweldRuntimeOnly
+//        java {
+//            compileClasspath += sourceSets.main.output
+//            compileClasspath += sourceSets.test.output
+//            runtimeClasspath += sourceSets.main.output
+//            runtimeClasspath += sourceSets.test.output
+//        }
+//        resources {
+//            srcDirs = ['src/test/resources', 'src/resources']
+//        }
+//    }
+}
+
+//task junit5Test(type: Test) {
+//    group = 'verification'
+//    testClassesDirs = sourceSets.junit5Test.output.classesDirs
+//    classpath = sourceSets.junit5Test.runtimeClasspath
+//    shouldRunAfter test
+//}
+
+//task junit4Test(type: Test) {
+//    group = 'verification'
+//    testClassesDirs = sourceSets.junit4Test.output.classesDirs
+//    classpath = sourceSets.junit4Test.runtimeClasspath
+//    shouldRunAfter test
+//}
+
+dependencies {
+
+    implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.3.7.Final'
+
+    //    testImplementation(group: 'org.hibernate', name: 'hibernate-core', version: '5.3.11.Final')
+    implementation(group: 'org.hibernate', name: 'hibernate-core', version: '5.3.7.Final')
+    implementation(group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final')
+
+    testImplementation(group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final')
+    testImplementation(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.4')
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    testImplementation(group: 'org.assertj', name: 'assertj-core', version: '3.20.2')
+
+
+//    junit4TestImplementation 'junit:junit:4.12'
+
+//junit5
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    testImplementation(group: 'org.jboss.weld', name: 'weld-junit5', version: '2.0.2.Final')
+    testImplementation(group: 'com.github.database-rider', name: 'rider-junit5', version: '1.25.0')
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}

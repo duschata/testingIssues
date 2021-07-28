@@ -1,0 +1,6 @@
+<dataset>
+    <testentity id="2" stringField="Meier" 	integerField="1" 	version="1"/>
+    <testentity id="4" stringField="Lehmann" integerField="2" 	version="1" />
+    <testentity id="1" stringField="Mueller" integerField="2"  	version="2"/>
+    <testentity id="3" stringField="Schmidt" 					version="1"/>
+</dataset>
