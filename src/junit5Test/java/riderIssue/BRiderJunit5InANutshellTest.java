@@ -2,14 +2,21 @@ package riderIssue;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.ValidatorFactory;
 
 import org.assertj.core.api.Assertions;
+import org.hibernate.validator.cdi.ValidationExtension;
+import org.hibernate.validator.internal.engine.ValidatorFactoryImpl;
+import org.jboss.weld.junit5.auto.AddBeanClasses;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,30 +25,48 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.util.EntityManagerProvider;
 import com.github.database.rider.junit5.DBUnitExtension;
 
-import de.riderIssues.TestEntity;
+import de.riderIssues.dao.MyDao;
+import de.riderIssues.entity.TestEntity;
+import de.riderIssues.validation.MyValidator;
 
+@EnableAutoWeld
 @ExtendWith(DBUnitExtension.class)
+@AddBeanClasses({
+        DefaultEm.class, //
+        ValidatorFactoryImpl.class, //
+        MyValidator.class, //
+        MyDao.class
+})
+@AddExtensions({ ValidationExtension.class })
 public class BRiderJunit5InANutshellTest {
 
     private ConnectionHolder connectionHolder = () -> EntityManagerProvider.instance("databaseRiderTestDB")
             .connection();
 
+    @Inject
+    private MyValidator myValidator;
+
+    @Inject
+    private ValidatorFactory validatorFactory;
+
+    @Inject
+    protected EntityManager em;
+
     private void startTransaction() {
-        getEntityManager().getTransaction().begin();
+        em.getTransaction().begin();
     }
 
     private void commitTransaction() {
         try {
-            getEntityManager().getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
-            getEntityManager().getTransaction().rollback();
+            em.getTransaction().rollback();
         }
     }
 
     @Test
     @DataSet(value = "testentity.xml", cleanBefore = true, transactional = true)
     public void shouldFailNoTransaction() {
-        EntityManager em = getEntityManager();
 
         Assertions.assertThat(em.getTransaction().isActive()).isTrue();
 
@@ -62,9 +87,7 @@ public class BRiderJunit5InANutshellTest {
 
     @Test
     @DataSet(value = "testentity.xml", cleanBefore = true, transactional = true)
-    public void shouldPassTransactionIsExplictStartedAndCommited() {
-
-        EntityManager em = getEntityManager();
+    public void shouldPassTransactionIsExplicitStartedAndCommited() {
 
         Assertions.assertThat(em.getTransaction().isActive()).isFalse();
         startTransaction();
@@ -87,18 +110,13 @@ public class BRiderJunit5InANutshellTest {
     }
 
     private List<TestEntity> loadAll(final String orderBy) {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<TestEntity> cQuery = getEntityManager().getCriteriaBuilder().createQuery(TestEntity.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TestEntity> cQuery = em.getCriteriaBuilder().createQuery(TestEntity.class);
         Root<TestEntity> c = cQuery.from(TestEntity.class);
         cQuery.select(c);
         cQuery.orderBy(cb.asc(c.get(orderBy)));
-        TypedQuery<TestEntity> query = getEntityManager().createQuery(cQuery);
+        TypedQuery<TestEntity> query = em.createQuery(cQuery);
 
         return query.getResultList();
     }
-
-    private EntityManager getEntityManager() {
-        return EntityManagerProvider.instance("databaseRiderTestDB").getEm();
-    }
-
 }

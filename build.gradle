@@ -54,12 +54,14 @@ dependencies {
 
     implementation(group: 'org.hibernate', name: 'hibernate-core', version: '5.5.7.Final')
     implementation(group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final')
+    implementation("javax.inject:javax.inject:1")
 
     testImplementation(group: 'org.assertj', name: 'assertj-core', version: '3.20.2')
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation(group: 'org.hsqldb', name: 'hsqldb', version: '2.5.0')
     testImplementation(group: 'org.hibernate',              name: 'hibernate-validator',    version: '6.0.14.Final')
     testImplementation(group: 'org.hibernate',              name: 'hibernate-validator-cdi',    version: '6.0.14.Final')
+    testImplementation(group: 'org.glassfish',              name: 'javax.el-impl',          version: '3.0.1-b08-jbossorg-1')
 
 
 //    junit4TestImplementation 'junit:junit:4.12'
