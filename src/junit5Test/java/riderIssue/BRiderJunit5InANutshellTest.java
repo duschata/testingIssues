@@ -1,6 +1,14 @@
 package riderIssue;
 
-import java.util.List;
+import com.github.database.rider.core.api.connection.ConnectionHolder;
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
+import com.github.database.rider.junit5.DBUnitExtension;
+import com.github.database.rider.junit5.util.EntityManagerProvider;
+import de.riderIssues.TestEntity;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -8,18 +16,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import com.github.database.rider.core.api.connection.ConnectionHolder;
-import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.core.api.dataset.ExpectedDataSet;
-import com.github.database.rider.core.util.EntityManagerProvider;
-import com.github.database.rider.junit5.DBUnitExtension;
-
-import de.riderIssues.TestEntity;
+import java.util.List;
 
 @ExtendWith(DBUnitExtension.class)
 public class BRiderJunit5InANutshellTest {
@@ -66,28 +63,20 @@ public class BRiderJunit5InANutshellTest {
     @ExpectedDataSet(value = "empty.yml")
     public void shouldPassTransactionIsExplictStartedAndCommited() {
 
-        EntityManager em = getEntityManager();
 
-        boolean active = em.getTransaction().isActive();
-
-        Assertions.assertThat(em.getTransaction().isActive()).isFalse();
-        startTransaction();
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
-
-        Query query = em.createQuery("select e from testentity e where e.id = 1l");
+        Query query = getEntityManager().createQuery("select e from testentity e where e.id = 1l");
         TestEntity singleResult = (TestEntity) query.getSingleResult();
 
         Assertions.assertThat(singleResult.getStringField()).isEqualTo("Mueller");
 
         TestEntity testEntity = new TestEntity();
         testEntity.setStringField("Merkel");
-        em.persist(testEntity);
+        getEntityManager().persist(testEntity);
 
         List<TestEntity> testEntities = loadAll("id");
 
         Assertions.assertThat(testEntities.size()).isEqualTo(5);
-
-        commitTransaction();
+        testEntities.forEach(getEntityManager()::remove);
     }
 
     private List<TestEntity> loadAll(final String orderBy) {
