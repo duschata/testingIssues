@@ -16,8 +16,8 @@ import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.junit.jupiter.api.Test;
 
-import de.riderIssues.dao.MyDao;
-import de.riderIssues.entity.TestEntity;
+import com.foo.bar.dao.MyDao;
+import com.foo.bar.entity.TestEntity;
 
 @EnableAutoWeld
 @AddBeanClasses({ //

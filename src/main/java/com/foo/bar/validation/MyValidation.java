@@ -1,4 +1,4 @@
-package de.riderIssues.validation;
+package com.foo.bar.validation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

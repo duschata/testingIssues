@@ -1,11 +1,11 @@
-package de.riderIssues.validation;
+package com.foo.bar.validation;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import de.riderIssues.dao.MyDao;
-import de.riderIssues.entity.TestEntity;
+import com.foo.bar.dao.MyDao;
+import com.foo.bar.entity.TestEntity;
 
 public class MyValidator implements ConstraintValidator<MyValidation, TestEntity> {
 

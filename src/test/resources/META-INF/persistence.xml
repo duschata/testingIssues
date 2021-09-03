@@ -8,7 +8,7 @@
     <persistence-unit name="databaseRiderTestDB"
                       transaction-type="RESOURCE_LOCAL">
         
-        <class>de.riderIssues.entity.TestEntity</class>
+        <class>com.foo.bar.entity.TestEntity</class>
         
         <properties>
             <property name="hibernate.dialect"

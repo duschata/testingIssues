@@ -1,4 +1,4 @@
-package de.riderIssues.entity;
+package com.foo.bar.entity;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-import de.riderIssues.validation.MyValidation;
+import com.foo.bar.validation.MyValidation;
 
 @Table(name = "testentity")
 @Entity(
