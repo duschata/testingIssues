@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.core.util.EntityManagerProvider;
 import com.github.database.rider.junit5.DBUnitExtension;
 
@@ -62,9 +63,12 @@ public class BRiderJunit5InANutshellTest {
 
     @Test
     @DataSet(value = "testentity.xml", cleanBefore = true, transactional = true)
+    @ExpectedDataSet(value = "empty.yml")
     public void shouldPassTransactionIsExplictStartedAndCommited() {
 
         EntityManager em = getEntityManager();
+
+        boolean active = em.getTransaction().isActive();
 
         Assertions.assertThat(em.getTransaction().isActive()).isFalse();
         startTransaction();
