@@ -3,4 +3,5 @@
     <testentity id="2" stringField="Meier" 	integerField="1" 	version="1"/>
     <testentity id="3" stringField="Schmidt" 					version="1"/>
     <testentity id="4" stringField="Lehmann" integerField="2" 	version="1" />
+    <testentity id="5" stringField="Merkel" 					version="0"/>
 </dataset>

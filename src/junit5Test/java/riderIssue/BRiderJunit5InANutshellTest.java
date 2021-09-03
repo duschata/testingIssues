@@ -38,31 +38,10 @@ public class BRiderJunit5InANutshellTest {
 
     @Test
     @DataSet(value = "testentity.xml", cleanBefore = true, transactional = true)
-    public void shouldFailNoTransaction() {
-        EntityManager em = getEntityManager();
-
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
-
-        Query query = em.createQuery("select e from testentity e where e.id = 1l");
-        TestEntity singleResult = (TestEntity) query.getSingleResult();
-
-        Assertions.assertThat(singleResult.getStringField()).isEqualTo("Mueller");
-
-        TestEntity testEntity = new TestEntity();
-        testEntity.setStringField("Merkel");
-        em.persist(testEntity);
-
-        List<TestEntity> testEntities = loadAll("id");
-
-        //        Never reached
-        Assertions.assertThat(testEntities.size()).isEqualTo(5);
-    }
-
-    @Test
-    @DataSet(value = "testentity.xml", cleanBefore = true, transactional = true)
-    @ExpectedDataSet(value = "empty.yml")
+    @ExpectedDataSet(value = "testentity_after.xml")
     public void shouldPassTransactionIsExplictStartedAndCommited() {
 
+        Assertions.assertThat(getEntityManager().getTransaction().isActive()).isTrue();
 
         Query query = getEntityManager().createQuery("select e from testentity e where e.id = 1l");
         TestEntity singleResult = (TestEntity) query.getSingleResult();
@@ -76,7 +55,6 @@ public class BRiderJunit5InANutshellTest {
         List<TestEntity> testEntities = loadAll("id");
 
         Assertions.assertThat(testEntities.size()).isEqualTo(5);
-        testEntities.forEach(getEntityManager()::remove);
     }
 
     private List<TestEntity> loadAll(final String orderBy) {
