@@ -19,7 +19,11 @@ public class MyValidator implements ConstraintValidator<MyValidation, TestEntity
 
     @Override
     public boolean isValid(TestEntity testEntity, ConstraintValidatorContext constraintValidatorContext) {
-//        myDao.doFoo();
+        myDao.doFoo();
         return true;
+    }
+
+    public MyDao getMyDao() {
+        return myDao;
     }
 }

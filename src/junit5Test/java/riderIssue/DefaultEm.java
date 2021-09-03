@@ -1,13 +1,26 @@
 package riderIssue;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
-import com.github.database.rider.core.util.EntityManagerProvider;
-
+@ApplicationScoped
 public class DefaultEm {
+
+    @Inject
+    private EntityManagerFactory entityManagerFactory;
+
+    //    @Produces
+    //    public EntityManager produce() {
+    //        return EntityManagerProvider.instance("databaseRiderTestDB").em();
+    //    }
+
     @Produces
-    public EntityManager getEntityManager() {
-        return EntityManagerProvider.instance("databaseRiderTestDB").getEm();
+    public EntityManager produceEntityManager() {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager;
     }
 }
