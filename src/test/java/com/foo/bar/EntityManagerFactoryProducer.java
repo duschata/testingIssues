@@ -1,4 +1,4 @@
-package riderIssue;
+package com.foo.bar;
 
 import java.util.HashMap;
 import java.util.Map;

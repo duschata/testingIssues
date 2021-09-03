@@ -1,4 +1,4 @@
-package riderIssue;
+package com.foo.bar;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

@@ -2,53 +2,6 @@ plugins {
     id 'java'
 }
 
-configurations {
-test
-//    junit4TestImplementation {
-//        extendsFrom testImplementation
-//    }
-    junit5TestImplementation {
-        extendsFrom testImplementation
-    }
-}
-
-
-sourceSets {
-
-    junit5Test {
-        java {
-            compileClasspath += sourceSets.main.output
-            runtimeClasspath += sourceSets.main.output
-        }
-        resources {
-            srcDirs = ['src/test/resources', 'src/resources']
-        }
-    }
-
-//    junit4Test {
-//        java {
-//            compileClasspath += sourceSets.main.output
-//            runtimeClasspath += sourceSets.main.output
-//        }
-//        resources {
-//            srcDirs = ['src/test/resources', 'src/resources']
-//        }
-//    }
-}
-
-task junit5Test(type: Test) {
-    group = 'verification'
-    testClassesDirs = sourceSets.junit5Test.output.classesDirs
-    classpath = sourceSets.junit5Test.runtimeClasspath
-    shouldRunAfter test
-}
-
-//task junit4Test(type: Test) {
-//    group = 'verification'
-//    testClassesDirs = sourceSets.junit4Test.output.classesDirs
-//    classpath = sourceSets.junit4Test.runtimeClasspath
-//    shouldRunAfter test
-//}
 
 dependencies {
 
@@ -59,28 +12,20 @@ dependencies {
     testImplementation(group: 'org.assertj', name: 'assertj-core', version: '3.20.2')
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation(group: 'org.hsqldb', name: 'hsqldb', version: '2.5.0')
-//    testImplementation(group: 'org.hibernate',              name: 'hibernate-validator',    version: '6.0.14.Final')
     testImplementation(group: 'org.hibernate',              name: 'hibernate-validator-cdi',    version: '6.0.14.Final')
     testImplementation(group: 'org.glassfish',              name: 'javax.el-impl',          version: '3.0.1-b08-jbossorg-1')
-//    testImplementation group: 'com.github.database-rider', name: 'rider-cdi', version: '1.27.0'
 
-
-//    junit4TestImplementation 'junit:junit:4.12'
 
     // junit5
-    junit5TestImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
-    junit5TestImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
-    junit5TestImplementation(group: 'org.jboss.weld', name: 'weld-junit5', version: '2.0.2.Final')
-    junit5TestImplementation(group: 'com.github.database-rider', name: 'rider-junit5', version: '1.27.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
+    testImplementation(group: 'org.jboss.weld', name: 'weld-junit5', version: '2.0.2.Final')
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
-junit5Test {
-    useJUnitPlatform()
-}
-
-// In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
