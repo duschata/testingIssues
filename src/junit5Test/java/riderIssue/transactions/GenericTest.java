@@ -1,4 +1,4 @@
-package riderIssue;
+package riderIssue.transactions;
 
 import java.util.List;
 
@@ -16,13 +16,15 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.junit5.util.EntityManagerProvider;
 
-import de.riderIssues.TestEntity;
+import riderIssue.entity.TestEntity;
+import riderIssue.entity.TestEntityWithValidation;
 
 public class GenericTest {
 
     private List<TestEntity> loadAll(final String orderBy) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<TestEntity> cQuery = getEntityManager().getCriteriaBuilder().createQuery(TestEntity.class);
+        CriteriaQuery<TestEntity> cQuery = getEntityManager().getCriteriaBuilder().createQuery(
+                TestEntity.class);
         Root<TestEntity> c = cQuery.from(TestEntity.class);
         cQuery.select(c);
         cQuery.orderBy(cb.asc(c.get(orderBy)));
