@@ -33,7 +33,6 @@ import riderIssue.validation.dao.MyDao;
         MyDao.class, //
         BeanManagerImpl.class })
 @AddExtensions({ ValidationExtension.class })
-@ExtendWith(DBUnitExtension.class)
 public class _01_DefaultExplTransaction {
 
     @Inject
@@ -53,10 +52,6 @@ public class _01_DefaultExplTransaction {
             em.getTransaction().rollback();
         }
     }
-
-    protected ConnectionHolder connectionHolder = () -> EntityManagerProvider
-            .instance(em.getEntityManagerFactory().getProperties().get("hibernate.ejb.persistenceUnitName").toString())
-            .connection();
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_01() {
