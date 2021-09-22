@@ -1,6 +1,5 @@
 package riderIssue.validation;
 
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,33 +12,41 @@ import org.jboss.weld.junit5.auto.AddBeanClasses;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.jboss.weld.manager.BeanManagerImpl;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import riderIssue.validation.dao.MyDao;
+import com.github.database.rider.core.api.connection.ConnectionHolder;
+import com.github.database.rider.junit5.DBUnitExtension;
+import com.github.database.rider.junit5.util.EntityManagerProvider;
+
 import riderIssue.entity.TestEntityWithValidation;
+import riderIssue.validation.dao.MyDao;
 
 @EnableAutoWeld
 @AddBeanClasses({ //
         EntityManagerFactoryProducer.class, //
         EntityManagerFactory.class, //
-        DefaultEm.class, //
+        EmProducer.class, //
         ValidatorFactoryImpl.class, //
         MyDao.class, //
         BeanManagerImpl.class })
 @AddExtensions({ ValidationExtension.class })
-public class WeldSEHibernateValidationTest {
+@ExtendWith(DBUnitExtension.class)
+public class _01_DefaultExplTransaction {
 
     @Inject
-    private BeanManager beanManager;
-
-    @Inject
+    @DefaultCDI
     protected EntityManager em;
 
-    private void startTransaction() {
+    @BeforeEach
+    public void startTransaction() {
         em.getTransaction().begin();
     }
 
-    private void commitTransaction() {
+    @AfterEach
+    public void commitTransaction() {
         try {
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -47,23 +54,26 @@ public class WeldSEHibernateValidationTest {
         }
     }
 
+    protected ConnectionHolder connectionHolder = () -> EntityManagerProvider
+            .instance(em.getEntityManagerFactory().getProperties().get("hibernate.ejb.persistenceUnitName").toString())
+            .connection();
+
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_01() {
-        startTransaction();
 
+        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
             em.persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
-
-        commitTransaction();
     }
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_02() {
-        startTransaction();
+
+        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
 
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
@@ -71,13 +81,12 @@ public class WeldSEHibernateValidationTest {
         Assertions.assertThatThrownBy(() -> {
             em.persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
-
-        commitTransaction();
     }
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_03() {
-        startTransaction();
+
+        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
 
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
@@ -85,7 +94,5 @@ public class WeldSEHibernateValidationTest {
         Assertions.assertThatThrownBy(() -> {
             em.persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
-
-        commitTransaction();
     }
 }

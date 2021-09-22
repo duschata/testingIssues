@@ -70,7 +70,7 @@ dependencies {
     junit5TestImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
     junit5TestImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
     junit5TestImplementation(group: 'org.jboss.weld', name: 'weld-junit5', version: '2.0.2.Final')
-    junit5TestImplementation(group: 'com.github.database-rider', name: 'rider-junit5', version: '1.27.0')
+    junit5TestImplementation(group: 'com.github.database-rider', name: 'rider-junit5', version: '1.31.1.1-SNAPSHOT')
 }
 
 junit5Test {

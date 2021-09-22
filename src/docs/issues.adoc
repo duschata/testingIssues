@@ -1,0 +1,94 @@
+# Zusammenfassung
+
+---
+
+## Simple Rider Test
+
+
+|===
+|Class |Test |Transactional |explizit Transaction |validator-cdi | new EntityManagerProvider per test (1.31.1.1)| Description
+
+|riderIssue.transactions.GenericTest
+|Alle
+|Ja
+|Nein
+|Nein
+|Nein
+|Test laufen einwandfrei. Transaction ist gestartet und Daten werden in die DB geschrieben
+
+
+|riderIssue.validation._01_DefaultExplTransaction
+|Alle
+|Nein
+|Ja
+|Ja
+|Ja
+|Tests laufen
+
+|===
+
+
+## Ohne Rider
+
+|===
+|Class |Test |Transactional |explizit Transaction |validator-cdi | new EntityManagerProvider per test (1.31.1.1)| Description
+
+
+|riderIssue.validation._01_DefaultExplTransaction
+|All
+|Nein (kein Rider)
+|Ja
+|Ja
+|Nein
+|Alles Gut
+
+|===
+
+## Rider ohne EntityManagerProvider singleton
+
+|===
+|Class |Test |Transactional |explizit Transaction |validator-cdi | new EntityManagerProvider per test (1.31.1.1)| Description
+
+
+|riderIssue.validation._02_RiderExplTransaction
+|Besonderheit beim ersten Test
+|Nein
+|Ja
+|Ja
+|Nein
+|Der zuerst ausgeführte Test läuft, alle weiteren schlagen fehl. Hier gibt es das  'Contextual reference of ValidatorFactoryBean' Problem
+
+
+|riderIssue.validation._03_RiderTransactional
+|Besonderheit beim ersten Test
+|Nein
+|Ja
+|Ja
+|Nein
+|Der zuerst ausgeführte Test läuft, alle weiteren schlagen fehl. Zwar ist eine Transaction da, JSR-303 wird aber nicht geladen
+|===
+
+## Rider mit EntityManagerProvider singleton
+
+|===
+|Class |Test |Transactional |explizit Transaction |validator-cdi | new EntityManagerProvider per test (1.31.1.1)| Description
+
+
+|riderIssue.validation._02_RiderExplTransaction
+|Alle
+|Nein
+|Ja
+|Ja
+|Ja
+|Tests laufen
+
+
+|riderIssue.validation._02_RiderExplTransaction
+|Besonderheit beim ersten Test
+|Nein
+|Ja
+|Ja
+|Ja
+|Der zuerst ausgeführte Test läuft nicht
+
+|===
