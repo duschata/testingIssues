@@ -54,6 +54,7 @@ public class _02_RiderExplTransaction {
         }
     }
 
+    //Hier ist der denkfehler
     protected ConnectionHolder connectionHolder = () -> EntityManagerProvider
             .instance(em.getEntityManagerFactory().getProperties().get("hibernate.ejb.persistenceUnitName").toString())
             .connection();

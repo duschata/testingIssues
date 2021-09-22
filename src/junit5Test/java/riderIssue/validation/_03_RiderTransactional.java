@@ -38,26 +38,30 @@ public class _03_RiderTransactional {
 
     @Inject
     @RiderCDI
-    protected EntityManager em;
+    protected EntityManager em; //1
 
 
-    protected ConnectionHolder connectionHolder = () -> EntityManagerProvider
+    protected ConnectionHolder connectionHolder = () -> EntityManagerProvider //em2
             .instance(em.getEntityManagerFactory().getProperties().get("hibernate.ejb.persistenceUnitName").toString())
             .connection();
 
-    @Test
+    @Test //transactional = true startet em2
     public void shouldUseTheValidatorWihtInjectedBean_01() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
+        Assertions.assertThat(em.getTransaction().isActive()).isTrue(); //em1
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation);
+            em.persist(testEntityWithValidation); //em1
         }).isInstanceOf(ConstraintViolationException.class);
     }
 
-    @Test
+    //weld weg
+
+    //weld erzeugt em3
+
+    @Test //transactional = true startet em3
     public void shouldUseTheValidatorWihtInjectedBean_02() {
 
         Assertions.assertThat(em.getTransaction().isActive()).isTrue();
