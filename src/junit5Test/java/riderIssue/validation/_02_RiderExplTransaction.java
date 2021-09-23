@@ -37,63 +37,63 @@ import riderIssue.validation.dao.MyDao;
 public class _02_RiderExplTransaction {
 
     @Inject
-    @RiderCDI
-    protected EntityManager em;
+    protected EntityManagerProvider entityManagerProvider;
 
     @BeforeEach
     public void startTransaction() {
-        em.getTransaction().begin();
+        getEm().getTransaction().begin();
     }
 
     @AfterEach
     public void commitTransaction() {
         try {
-            em.getTransaction().commit();
+            getEm().getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            getEm().getTransaction().rollback();
         }
     }
 
-    //Hier ist der denkfehler
-    protected ConnectionHolder connectionHolder = () -> EntityManagerProvider
-            .instance(em.getEntityManagerFactory().getProperties().get("hibernate.ejb.persistenceUnitName").toString())
-            .connection();
+    protected ConnectionHolder connectionHolder = () -> entityManagerProvider.connection();
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_01() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
+        Assertions.assertThat(getEm().getTransaction().isActive()).isTrue();
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation);
+            getEm().persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_02() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
+        Assertions.assertThat(getEm().getTransaction().isActive()).isTrue();
 
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation);
+            getEm().persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_03() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
+        Assertions.assertThat(getEm().getTransaction().isActive()).isTrue();
 
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation);
+            getEm().persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    public EntityManager getEm () {
+        return entityManagerProvider.getEm();
     }
 }

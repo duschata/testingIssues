@@ -37,23 +37,19 @@ import riderIssue.validation.dao.MyDao;
 public class _03_RiderTransactional {
 
     @Inject
-    @RiderCDI
-    protected EntityManager em; //1
+    protected EntityManagerProvider entityManagerProvider;
 
-
-    protected ConnectionHolder connectionHolder = () -> EntityManagerProvider //em2
-            .instance(em.getEntityManagerFactory().getProperties().get("hibernate.ejb.persistenceUnitName").toString())
-            .connection();
+    protected ConnectionHolder connectionHolder = () -> entityManagerProvider.connection();
 
     @Test //transactional = true startet em2
     public void shouldUseTheValidatorWihtInjectedBean_01() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue(); //em1
+        Assertions.assertThat(getEm().getTransaction().isActive()).isTrue(); //em1
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation); //em1
+            getEm().persist(testEntityWithValidation); //em1
         }).isInstanceOf(ConstraintViolationException.class);
     }
 
@@ -64,26 +60,30 @@ public class _03_RiderTransactional {
     @Test //transactional = true startet em3
     public void shouldUseTheValidatorWihtInjectedBean_02() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
+        Assertions.assertThat(getEm().getTransaction().isActive()).isTrue();
 
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation);
+            getEm().persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
     public void shouldUseTheValidatorWihtInjectedBean_03() {
 
-        Assertions.assertThat(em.getTransaction().isActive()).isTrue();
+        Assertions.assertThat(getEm().getTransaction().isActive()).isTrue();
 
         TestEntityWithValidation testEntityWithValidation = new TestEntityWithValidation();
         testEntityWithValidation.setStringField("AString");
 
         Assertions.assertThatThrownBy(() -> {
-            em.persist(testEntityWithValidation);
+            getEm().persist(testEntityWithValidation);
         }).isInstanceOf(ConstraintViolationException.class);
+    }
+
+    public EntityManager getEm () {
+        return entityManagerProvider.getEm();
     }
 }

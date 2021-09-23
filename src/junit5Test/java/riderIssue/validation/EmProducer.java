@@ -30,6 +30,14 @@ public class EmProducer {
     private ValidatorFactory validatorFactory;
 
     @Produces
+    EntityManagerProvider createEntityManagerProvider() {
+        Map<String, Object> props = new HashMap();
+        props.put("javax.persistence.validation.factory", validatorFactory);
+
+        return EntityManagerProvider.instance("databaseRiderTestDB", props);
+    }
+
+    @Produces
     @RiderCDI
     public EntityManager createEntityManager() {
         Map<String, Object> props = new HashMap();
