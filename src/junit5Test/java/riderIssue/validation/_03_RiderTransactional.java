@@ -18,7 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.DBUnitExtension;
-import com.github.database.rider.junit5.util.EntityManagerProvider;
+import com.github.database.rider.core.util.EntityManagerProvider;
 
 import riderIssue.entity.TestEntityWithValidation;
 import riderIssue.validation.dao.MyDao;

@@ -23,7 +23,6 @@ public class EntityManagerFactoryProducer {
         props.put("javax.persistence.validation.factory", validatorFactory);
         EntityManagerFactory entityManagerFactory = Persistence
                 .createEntityManagerFactory("databaseRiderTestDB", props);
-
         return entityManagerFactory;
     }
 

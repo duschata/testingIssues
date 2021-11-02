@@ -15,11 +15,6 @@ import org.jboss.weld.manager.BeanManagerImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import com.github.database.rider.core.api.connection.ConnectionHolder;
-import com.github.database.rider.junit5.DBUnitExtension;
-import com.github.database.rider.junit5.util.EntityManagerProvider;
 
 import riderIssue.entity.TestEntityWithValidation;
 import riderIssue.validation.dao.MyDao;

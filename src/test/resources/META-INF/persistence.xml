@@ -18,6 +18,32 @@
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.id.new_generator_mappings" value="false" />
+            <property name="javax.persistence.validation.mode" value="AUTO" />
+        </properties>
+
+    </persistence-unit>
+
+    <persistence-unit name="myPu" transaction-type="JTA">
+        <description>Hibernate test case template Persistence Unit</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:jboss/datasources/MyDS</jta-data-source>
+
+<!--        <exclude-unlisted-classes>false</exclude-unlisted-classes>-->
+        <class>jpacditesting.TestEntity</class>
+
+        <properties>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+
+            <property name="hibernate.connection.pool_size" value="5"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+
+            <property name="hibernate.max_fetch_depth" value="5"/>
+
+            <property name="javax.persistence.validation.mode" value="NONE"/>
         </properties>
 
     </persistence-unit>
